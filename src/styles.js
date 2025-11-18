@@ -8,4 +8,9 @@ export const Container = styled.div`
   justify-content: space-between;
   position: relative;
   font-family: Inter, sans-serif !important;
+
+  .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #5146e2 !important; /* your color */
+    border-color: #5146e2 !important;
+  } 
 `;

@@ -9,6 +9,7 @@ import {
   Heading,
   Text,
 } from "./styles";
+import { BudgetContainer, FiltersContainer, TableContainer } from "./content";
 
 const MainContainer = () => {
   const data = [
@@ -41,15 +42,9 @@ const MainContainer = () => {
         We've raised a $100M seed round for our amazing new startup, and it’s
         time to lock in.
       </Text>
-      <BudgetContainers>
-        {data.map((item, index) => (
-          <BudgetCard key={index}>
-            <BudgetText>{item.heading}</BudgetText>
-            <BudgetSubText>{item.subText}</BudgetSubText>
-            <BudgetAmount>{item.amount}</BudgetAmount>
-          </BudgetCard>
-        ))}
-      </BudgetContainers>
+      <BudgetContainer data={data} />
+      <FiltersContainer />
+      <TableContainer />
     </Container>
   );
 };
