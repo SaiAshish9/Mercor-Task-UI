@@ -39,8 +39,8 @@ const MainContainer = () => {
     <Container>
       <Heading>Application Shortlisting</Heading>
       <Text>
-        We've raised a $100M seed round for our amazing new startup, and it’s
-        time to lock in.
+        We've raised a <span style={{ color: "#5146e2" }}>$100M</span> seed round for
+        our amazing new startup, and it’s time to lock in.
       </Text>
       <BudgetContainer data={data} />
       <FiltersContainer />
