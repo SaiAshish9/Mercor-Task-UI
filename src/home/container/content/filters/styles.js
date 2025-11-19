@@ -5,7 +5,7 @@ export const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 1rem;
+  gap: 0.5rem;
   .ant-select-dropdown {
     box-shadow: none !important;
     &:active,

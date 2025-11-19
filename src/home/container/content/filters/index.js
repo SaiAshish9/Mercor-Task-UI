@@ -1,77 +1,52 @@
-import React, { useState } from "react";
+import React from "react";
 import { Container, ShortlistedBtn } from "./styles";
 import { Select } from "antd";
+import { useStore } from "store";
 
 const { Option } = Select;
 
 const FiltersContainer = () => {
-  const [shortlisted, setShortlisted] = useState(false);
+  const {
+    state: { filters, shortlisted },
+    actions: { setShortlisted },
+  } = useStore();
+
+  const options = [
+    { placeholder: "Select Location(s)", options: filters.locations || [] },
+    { placeholder: "Select Role(s)", options: filters.roles || [] },
+    {
+      placeholder: "Select Organization(s)",
+      options: filters.organizations || [],
+    },
+    { placeholder: "Select Skill(s)", options: filters.skills || [] },
+  ];
 
   return (
     <Container>
-      <Select
-        showSearch
-        placeholder="Select Location(s)"
-        optionFilterProp="children"
-        allowClear
-        mode="multiple"
-        style={{ width: 200 }}
-        filterOption={(input, option) =>
-          option.children.toLowerCase().includes(input.toLowerCase())
-        }
-      >
-        <Option value="apple">Apple</Option>
-        <Option value="banana">Banana</Option>
-        <Option value="cherry">Cherry</Option>
-      </Select>
-      <Select
-        showSearch
-        placeholder="Select Role(s)"
-        optionFilterProp="children"
-        allowClear
-        mode="multiple"
-        style={{ width: 200 }}
-        filterOption={(input, option) =>
-          option.children.toLowerCase().includes(input.toLowerCase())
-        }
-      >
-        <Option value="apple">Apple</Option>
-        <Option value="banana">Banana</Option>
-        <Option value="cherry">Cherry</Option>
-      </Select>
-      <Select
-        showSearch
-        placeholder="Select Organization(s)"
-        mode="multiple"
-        optionFilterProp="children"
-        allowClear
-        style={{ width: 200 }}
-        filterOption={(input, option) =>
-          option.children.toLowerCase().includes(input.toLowerCase())
-        }
-      >
-        <Option value="apple">Apple</Option>
-        <Option value="banana">Banana</Option>
-        <Option value="cherry">Cherry</Option>
-      </Select>
-      <Select
-        showSearch
-        placeholder="Select Skill(s)"
-        mode="multiple"
-        optionFilterProp="children"
-        allowClear
-        style={{ width: 200 }}
-        filterOption={(input, option) =>
-          option.children.toLowerCase().includes(input.toLowerCase())
-        }
-      >
-        <Option value="apple">Apple</Option>
-        <Option value="banana">Banana</Option>
-        <Option value="cherry">Cherry</Option>
-      </Select>
+      {options.map(({ placeholder, options }) => (
+        <Select
+          key={placeholder}
+          showSearch
+          placeholder={placeholder}
+          optionFilterProp="children"
+          allowClear
+          mode="multiple"
+          style={{ width: 200, marginRight: "1rem" }}
+          filterOption={(input, option) =>
+            option.children.toLowerCase().includes(input.toLowerCase())
+          }
+        >
+          {options.map((option) => (
+            <Option key={option} value={option}>
+              {option}
+            </Option>
+          ))}
+        </Select>
+      ))}
+
       <ShortlistedBtn
         onClick={() => {
-          setShortlisted((shortlisted) => !shortlisted);
+          setShortlisted(!shortlisted);
         }}
         shortlisted={+shortlisted}
       >

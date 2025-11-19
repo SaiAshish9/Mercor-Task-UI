@@ -6,11 +6,15 @@ import reportWebVitals from "./reportWebVitals";
 
 import "antd/dist/reset.css";
 import "global/main.css";
+import { StoreProvider } from "store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <React.StrictMode>
-    <App />
+    <StoreProvider>
+      <App />
+    </StoreProvider>
   </React.StrictMode>
 );
 

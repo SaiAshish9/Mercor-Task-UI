@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, StyledTableContainer } from "./styles";
-import DATA from "./data.json";
 import { Checkbox } from "antd";
+import { useStore } from "store";
 
 const TableContainer = () => {
   const columns = [
@@ -58,9 +58,24 @@ const TableContainer = () => {
     },
   ];
 
+  const {
+    state: { data },
+  } = useStore();
+
   return (
     <Container>
-      <StyledTableContainer columns={columns} dataSource={DATA} />
+      {data?.length === 0 ? (
+        <p
+          style={{
+            fontSize: "0.8rem",
+            color: "rgb(107 114 128)",
+          }}
+        >
+          Loading...
+        </p>
+      ) : (
+        <StyledTableContainer columns={columns} dataSource={data} />
+      )}
     </Container>
   );
 };
