@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, ShortlistedBtn } from "./styles";
 import { Select } from "antd";
 
 const { Option } = Select;
 
 const FiltersContainer = () => {
+  const [shortlisted, setShortlisted] = useState(false);
+
   return (
     <Container>
       <Select
@@ -37,7 +39,7 @@ const FiltersContainer = () => {
         <Option value="banana">Banana</Option>
         <Option value="cherry">Cherry</Option>
       </Select>
-       <Select
+      <Select
         showSearch
         placeholder="Select Organization(s)"
         mode="multiple"
@@ -67,7 +69,14 @@ const FiltersContainer = () => {
         <Option value="banana">Banana</Option>
         <Option value="cherry">Cherry</Option>
       </Select>
-      <ShortlistedBtn>Shortlisted</ShortlistedBtn>
+      <ShortlistedBtn
+        onClick={() => {
+          setShortlisted((shortlisted) => !shortlisted);
+        }}
+        shortlisted={+shortlisted}
+      >
+        Shortlisted
+      </ShortlistedBtn>
     </Container>
   );
 };

@@ -37,12 +37,10 @@ export const ShortlistedBtn = styled.div`
   justify-content: center;
   border-radius: 6px;
   font-size: 0.875rem;
-  font-weight: 400;
-  color: #5146e2;
   cursor: pointer;
-  &:hover {
-    background-color: #5146e2;
-    color: #fff;
-    transition: all 0.3s ease;
-  }
+  font-weight: 400;
+  background-color: ${({ shortlisted }) =>
+    shortlisted === 0 ? "white" : "#5146e2"};
+  color: ${({ shortlisted }) => (shortlisted === 0 ? "#5146e2 " : "#fff")};
+  cursor: pointer;
 `;
