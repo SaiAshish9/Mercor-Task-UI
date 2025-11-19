@@ -2,14 +2,54 @@ import React from "react";
 import { Container, StyledTableContainer } from "./styles";
 import { Checkbox } from "antd";
 import { useStore } from "store";
+import axios from "axios";
 
 const TableContainer = () => {
+  const {
+    state: {
+      data,
+      dataLoaded,
+      budget,
+      selectedFilters,
+      shortlisted: shortlisted1,
+    },
+    actions: { setBudget, setData },
+  } = useStore();
+
   const columns = [
     {
       title: <Checkbox disabled />,
       dataIndex: "select",
       key: "select",
-      render: (_) => <Checkbox />,
+      render: (_, { id, shortlisted }) => (
+        <Checkbox
+          checked={shortlisted ?? false}
+          disabled={!budget || +budget.substring(1) < 0}
+          onClick={async () => {
+            await axios.post(
+              "http://localhost:8080/api/u/applications/shortlist",
+              {
+                id,
+                shortlisted: !(shortlisted ?? false),
+              }
+            );
+            const res = await axios.post(
+              "http://localhost:8080/api/u/applications/budget",
+              {}
+            );
+            setBudget(res.data?.budget);
+            const res1 = await axios.post(
+              "http://localhost:8080/api/u/applications",
+              {
+                ...selectedFilters,
+                shortlisted1,
+              }
+            );
+
+            setData(res1.data);
+          }}
+        />
+      ),
     },
     {
       title: "Name",
@@ -58,10 +98,6 @@ const TableContainer = () => {
     },
   ];
 
-  const {
-    state: { data },
-  } = useStore();
-
   return (
     <Container>
       {data?.length === 0 ? (
@@ -71,7 +107,7 @@ const TableContainer = () => {
             color: "rgb(107 114 128)",
           }}
         >
-          Loading...
+          {!dataLoaded ? "Loading..." : "No Data Found"}
         </p>
       ) : (
         <StyledTableContainer columns={columns} dataSource={data} />

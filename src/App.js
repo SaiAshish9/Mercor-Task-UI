@@ -1,40 +1,58 @@
-import { useEffect } from "react";
+import { useEffect, useCallback, useState } from "react";
 import "./App.css";
 import { Container } from "styles";
 import { Sidebar } from "layout";
 import { MainContainer } from "home";
 import { ConfigProvider } from "antd";
 import axios from "axios";
-import { get, useStore } from "store";
+import { useStore } from "store";
 
 function App() {
   const {
-    actions: { setData, setFilters },
+    state: { shortlisted, selectedFilters, dataLoaded },
+    actions: { setData, setFilters, setDataLoaded, setBudget },
   } = useStore();
 
-  const getData = async () => {
-    const response = await axios.post(
-      "http://localhost:8080/api/u/applications",
-      {}
-    );
-    setData(response.data);
-  };
+  const [filtersLoaded, setFiltersLoaded] = useState(false);
 
-  const getFilters = async () => {
-    const response = await axios.post(
+  const getFilters = useCallback(async () => {
+    const res = await axios.post(
       "http://localhost:8080/api/u/applications/filters",
       {}
     );
-    setFilters(response.data);
-  };
+    setFilters(res.data);
+    setFiltersLoaded(true);
+  }, [setFilters]);
 
-  const getResponse = async () => {
-    await Promise.all([getData(), getFilters()]);
-  };
+  const getBudget = useCallback(async () => {
+    const res = await axios.post(
+      "http://localhost:8080/api/u/applications/budget",
+      {}
+    );
+    setBudget(res.data?.budget);
+  }, [setBudget]);
+
+  const getData = useCallback(async () => {
+    const res = await axios.post("http://localhost:8080/api/u/applications", {
+      ...selectedFilters,
+      shortlisted,
+    });
+    if (!dataLoaded && res.data?.length > 0) {
+      setDataLoaded(true);
+    }
+    setData(res.data);
+  }, [selectedFilters, shortlisted, setData]);
 
   useEffect(() => {
-    getResponse();
+    getFilters();
+    getBudget();
   }, []);
+
+  useEffect(() => {
+    if (filtersLoaded) {
+      getData();
+    }
+  }, [filtersLoaded, selectedFilters, shortlisted]);
 
   return (
     <ConfigProvider
