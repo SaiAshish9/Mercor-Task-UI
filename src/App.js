@@ -24,6 +24,8 @@ function App() {
     setFiltersLoaded(true);
   }, [setFilters]);
 
+
+
   const getBudget = useCallback(async () => {
     const res = await axios.post(
       "http://localhost:8080/api/u/applications/budget",
